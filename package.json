@@ -1,0 +1,22 @@
+{
+  "name": "lunch-decider",
+  "version": "0.0.1",
+  "description": "Web application that decide which restaurant should we go for today's lunch randomly",
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build"
+  },
+  "author": "mido_app",
+  "license": "ISC",
+  "dependencies": {
+    "firebase": "^5.4.2",
+    "bootstrap-vue": "^2.0.0-rc.11",
+    "nuxt": "^1.4.0"
+  },
+  "devDependencies": {
+    "firebase-tools": "^4.2.1",
+    "node-sass": "^4.9.3",
+    "sass-loader": "^7.0.1",
+    "webpack": "^3.12.0"
+  }
+}

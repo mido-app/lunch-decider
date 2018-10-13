@@ -3,6 +3,9 @@ module.exports = {
   modules: [
     ['bootstrap-vue/nuxt', { css: false }]
   ],
+  router: {
+    middleware: 'auth'
+  },
   plugins: [
     '~/plugins/firebase'
   ],

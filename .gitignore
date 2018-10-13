@@ -8,5 +8,9 @@ npm-debug.log
 /dist/
 
 # firebase
+/.firebase/
 firebase.config.js
 firebase-debug.log
+
+# doc
+/doc/

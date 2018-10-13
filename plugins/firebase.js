@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import firebase from 'firebase/app'
-import 'firebase/firestore'
+import 'firebase/auth'
 import config from '../firebase.config'
 
 export default (context) => {
@@ -9,17 +9,17 @@ export default (context) => {
     firebase.initializeApp(config)
   }
 
-  // Firestoreの初期化
-  let firestore = firebase.firestore()
-  firestore.settings({ timestampsInSnapshots: true })
+  // Firebase Authenticationの初期化
+  let auth = firebase.auth()
+  auth.useDeviceLanguage()
 
   // 全Vueコンポーネントからfirebaseを使えるようにする
   Vue.use({
     install: function (Vue, options) {
-      Vue.prototype.$firestore = firestore
+      Vue.prototype.$auth = auth
     }
   })
 
   // コンテキストからfirebaseを使えるようにする
-  context.$firestore = firestore
+  context.$auth = auth
 }

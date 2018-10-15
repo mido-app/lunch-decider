@@ -6,5 +6,8 @@ service cloud.firestore {
     match /spot-list/{spotId} {
       allow create: if request.auth != null && request.auth.uid == request.resource.data.ownerId;
     }
+    match /spots/{spotId} {
+      allow create: if request.auth != null && request.auth.uid == request.resource.data.ownerId;
+    }
   }
 }

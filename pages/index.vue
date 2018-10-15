@@ -41,7 +41,7 @@ export default {
           iconURL: data['iconURL']
         }
       }
-      context.redirect(`/${doc.userId}`)
+      context.redirect(`/user/${doc.userId}`)
     }
   },
   methods: {

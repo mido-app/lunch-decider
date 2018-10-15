@@ -1,7 +1,7 @@
 import firebase from 'firebase/app'
 import 'firebase/auth'
 
-export default function (context) {
+export default async function (context) {
   // インデックス画面では何もしない
   if (context.route.path === '/') return
 
@@ -17,6 +17,7 @@ export default function (context) {
           iconURL: user.photoURL
         }
         context.store.commit('auth/setUser', userDoc)
+        console.log('authentication finished')
       } else {
         // サインインしていない場合・サインアウトした場合
         // ストアの情報をクリアした上でインデックス画面に飛ばす

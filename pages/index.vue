@@ -1,22 +1,21 @@
 <template>
   <div>
-    <h1>ログイン状態 : {{ isAuthenticated }}</h1>
-    <b-button variant="primary" v-if="!isAuthenticated" @click="login">Twitterで登録/ログイン</b-button>
-    <b-button v-if="isAuthenticated" @click="logout">ログアウト</b-button>
+    <b-navbar toggleable="md" type="dark" variant="info">
+      <b-navbar-brand href="/">ランチキメる君</b-navbar-brand>
+      <b-navbar-nav class="ml-auto">
+        <b-nav-form>
+          <b-button variant="primary" @click="login">Twitterで登録/ログイン</b-button>
+        </b-nav-form>
+      </b-navbar-nav>
+    </b-navbar>
   </div>
 </template>
 
 <script>
 import firebase from 'firebase/app'
 
-export default {  
-  data () {
-    return {
-    }
-  },
-  computed: {
-    isAuthenticated () { return this.$store.getters['auth/isAuthenticated'] }
-  },
+export default {
+  layout: 'no-nav',
   async fetch (context) {
     // Twitter認証してリダイレクト後、ユーザデータをstoreに詰め込む
     let result = await context.$auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).then(() => {
@@ -47,10 +46,6 @@ export default {
   methods: {
     login () {
       this.$auth.signInWithRedirect(new firebase.auth.TwitterAuthProvider())
-    },
-    async logout () {
-      await this.$auth.signOut()
-      this.$store.commit('auth/setUser', null)
     }
   }
 }

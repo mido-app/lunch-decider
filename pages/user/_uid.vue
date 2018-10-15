@@ -57,21 +57,22 @@ import firebase from 'firebase/app'
 
 export default {
   async asyncData (context) {
-    let snapshot = await context.$firestore.collection('spot-list').where('ownerId', '==', context.params.uid).get()
-    let spotLists = []
-    snapshot.forEach(doc => {
-      let data = doc.data()
-      spotLists.push({
-        id: doc.id,
-        name: data.name,
-        description: data.description,
-        ownerId: data.ownerId,
-        createdAt: data.createdAt.toDate(),
-        updatedAt: data.updatedAt.toDate()
-      })
-    })
+    // let snapshot = await context.$firestore.collection('spot-list').where('ownerId', '==', context.params.uid).get()
+    // let spotLists = []
+    // snapshot.forEach(doc => {
+    //   let data = doc.data()
+    //   spotLists.push({
+    //     id: doc.id,
+    //     name: data.name,
+    //     description: data.description,
+    //     ownerId: data.ownerId,
+    //     createdAt: data.createdAt.toDate(),
+    //     updatedAt: data.updatedAt.toDate()
+    //   })
+    // })
+    console.log('async data')
     return {
-      spotLists: spotLists
+      // spotLists: spotLists
     }
   },
   data () {

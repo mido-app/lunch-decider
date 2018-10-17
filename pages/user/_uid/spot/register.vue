@@ -45,7 +45,7 @@ export default {
     this.input.ownerId = authUser.userId;
   },
   methods: {
-    ...mapActions(["addSpot"]),
+    ...mapActions(["spot/addSpot"]),
     async addSpotLocal() {
         let res = await this.addSpot(this.input)
         this.message = "Success!! registerd at :" + res.path

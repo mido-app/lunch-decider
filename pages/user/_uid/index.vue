@@ -25,8 +25,9 @@
                   <h4>{{ spotList.name }}</h4>
                   <p class="card-text">{{ spotList.description }}</p>
                 </b-col>
-                <b-col cols="2">
-                  <b-button variant="primary">Go!</b-button>
+                <b-col class="text-right">
+                  <b-button class="mr-2" variant="primary">ランチに行く</b-button>
+                  <b-button variant="secondary" :to="`/user/${user.userId}/spot-list/${spotList.id}/edit`">編集</b-button>
                 </b-col>
               </b-row>
             </b-container>
@@ -87,7 +88,6 @@ export default {
     },
     async onRegisterSpotList (spotListInput) {
       // 登録処理
-      console.log(spotListInput)
       spotListInput.ownerId = this.user.userId
       await this.$store.dispatch('spot-list/registerSpotList', spotListInput)
 

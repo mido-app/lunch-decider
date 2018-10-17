@@ -28,26 +28,20 @@ export default {
   
   data () {
     return {
-        input: {
-          name: "",
-          address: "",
-          priceRange: "",
-          numberOfPeople: "",
-          description: "",
-          ownerId:null
-        },
-        message:"",
+      input: {
+        name: '',
+        address: '',
+        priceRange: '',
+        numberOfPeople: '',
+        description: '',
+        ownerId: this.$store.getters['auth/user'].userId
+      },
+      message:'',
     }
   },
-  
-  mounted: function(){
-    let authUser = this.$store.getters['auth/user'];
-    this.input.ownerId = authUser.userId;
-  },
   methods: {
-    ...mapActions(["spot/addSpot"]),
     async addSpotLocal() {
-        let res = await this.addSpot(this.input)
+        let res = await this.$store.dispatch('spot/registerSpot', this.input)
         this.message = "Success!! registerd at :" + res.path
     }
   }

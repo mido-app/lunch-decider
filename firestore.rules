@@ -3,7 +3,7 @@ service cloud.firestore {
     match /users/{uid} {
       allow read, write: if request.auth != null && request.auth.uid == uid;
     }
-    match /spot-list/{spotId} {
+    match /spot-lists/{spotId} {
       allow create: if request.auth != null && request.auth.uid == request.resource.data.ownerId;
       allow read: if request.auth != null;
     }

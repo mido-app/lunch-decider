@@ -1,7 +1,7 @@
 {
   "indexes": [
     {
-      "collectionId": "spot-list",
+      "collectionId": "spot-lists",
       "fields": [
         { "fieldPath": "ownerId", "mode": "ASCENDING" },
         { "fieldPath": "createdAt", "mode": "DESCENDING" }

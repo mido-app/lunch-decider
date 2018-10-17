@@ -1,32 +1,68 @@
 <template>
   <article>
     <b-container>
-      <b-row align-h="center">
+      <!-- <b-row align-h="center">
         <h2 class="my-5">今日のランチをキメる！</h2>
         <b-form-select class="my-3" v-model="selectedSpotList" :options="spotListOptions" size="lg" />
         <b-button class="my-3" variant="primary" size="lg" @click="decideSpot">今日はここだ！</b-button>
+      </b-row> -->
+      <b-row>
+        <b-col>
+          <h2>行き先リスト設定</h2>
+        </b-col>
+      </b-row>      
+      <b-row>
+        <b-col class="text-right">
+          <b-button @click="onClickAddSpotListButton">行き先リストを追加</b-button>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col class="my-2" v-for="spotList in spotLists" :key="spotList.id" :cols="12">
+          <b-card>
+            <b-container fluid>
+              <b-row align-v="center">
+                <b-col>
+                  <h4>{{ spotList.name }}</h4>
+                  <p class="card-text">{{ spotList.description }}</p>
+                </b-col>
+                <b-col cols="2">
+                  <b-button variant="primary">Go!</b-button>
+                </b-col>
+              </b-row>
+            </b-container>
+          </b-card>
+        </b-col>
       </b-row>
     </b-container>
+
+    <spot-list-upsert-modal description="行き先リストの名前・説明を入れてね"
+                            okBtnName="登録"
+                            :visible.sync="spotListRegisterModalIsVisible"
+                            @ok="onRegisterSpotList"
+                            @cancel="closeModal" />
   </article>
 </template>
 
 <script>
-import firebase from 'firebase/app'
+import { firebase } from '~/plugins/firebase'
+import spotListUpsertModal from '~/components/spotListUpsertModal.vue'
 
 export default {
+  components: {
+    spotListUpsertModal
+  },
+  async fetch ({ store, params }) {
+    await store.dispatch('spot-list/fetchUserDefinedSpotList', params.uid)
+  },
   data () {
     return {
-      spotLists: [],
       spotListRegisterModalIsVisible: false,
-      spotListInput: {
-        name: '',
-        description: ''
-      },
       selectedSpotList: null
     }
   },
   computed: {
-    user () { return this.$store.getters['auth/user'] || {} },
+    user () { return this.$store.getters['auth/user'] },
+    spotLists () { return this.$store.getters['spot-list/spotLists'] },
     spotListNameIsValid () {
       if (this.spotListInput.name) return true
       else return false
@@ -49,32 +85,11 @@ export default {
     onClickAddSpotListButton () {
       this.spotListRegisterModalIsVisible = true
     },
-    async onRegisterSpotList () {
-      // バリデーション
-      if (!this.spotListNameIsValid) {
-        return
-      }
-
-      // 新しい行き先リストをFirestoreに作成
-      let docRef = await this.$firestore.collection('spot-list').add({
-        name: this.spotListInput.name,
-        description: this.spotListInput.description,
-        ownerId: this.user.userId,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-      })
-      let docSnapShot = await docRef.get()
-
-      // 画面表示用のリストに追加
-      let data = docSnapShot.data()
-      this.spotLists.push({
-        id: docSnapShot.id,
-        name: data['name'],
-        description: data['description'],
-        ownerId: data['ownerId'],
-        createdAt: data['createdAt'],
-        updatedAt: data['updatedAt']
-      })
+    async onRegisterSpotList (spotListInput) {
+      // 登録処理
+      console.log(spotListInput)
+      spotListInput.ownerId = this.user.userId
+      await this.$store.dispatch('spot-list/registerSpotList', spotListInput)
 
       // モーダルを閉じる
       this.closeModal()

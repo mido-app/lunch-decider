@@ -26,7 +26,7 @@
                   <p class="card-text">{{ spotList.description }}</p>
                 </b-col>
                 <b-col class="text-right">
-                  <b-button class="mr-2" variant="primary">ランチに行く</b-button>
+                  <b-button class="mr-2" variant="primary" :to="`/user/${user.userId}/spot-list/${spotList.id}`">ランチに行く</b-button>
                   <b-button variant="secondary" :to="`/user/${user.userId}/spot-list/${spotList.id}/edit`">編集</b-button>
                 </b-col>
               </b-row>

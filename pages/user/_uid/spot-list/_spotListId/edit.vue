@@ -29,10 +29,10 @@
     </b-row>
 
     <spot-upsert-modal description="行き先リストの名前・説明を入れてね"
-                            okBtnName="登録"
-                            :visible.sync="spotRegisterModalIsVisible"
-                            @ok="onRegisterSpot"
-                            @cancel="closeModal" />
+                       okBtnName="登録"
+                       :visible.sync="spotRegisterModalIsVisible"
+                       @ok="onRegisterSpot"
+                       @cancel="closeModal" />
   </b-container>
 </template>
 
@@ -64,8 +64,7 @@ export default {
       this.spotRegisterModalIsVisible = true
     },
     async onRegisterSpot (spot) {
-      console.log(spot)
-      // this.$store.dispatch('spot-list/registerSpot')
+      await this.$store.dispatch('spot-list/registerSpot', spot)
       this.closeModal()
     },
     closeModal () {

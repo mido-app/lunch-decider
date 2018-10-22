@@ -56,6 +56,7 @@ export const actions = {
         name: data.name,
         description: data.description,
         ownerId: data.ownerId,
+        spots: data.spots,
         createdAt: data.createdAt.toDate(),
         updatedAt: data.updatedAt.toDate()
       })
@@ -72,6 +73,7 @@ export const actions = {
       name: data.name,
       description: data.description,
       ownerId: data.ownerId,
+      spots: data.spots,
       createdAt: data.createdAt.toDate(),
       updatedAt: data.updatedAt.toDate()
     })

@@ -1,18 +1,28 @@
 import { firebase, firestore } from '~/plugins/firebase'
 
 export const state = () => ({
+  /** 行き先リスト一覧 */
+  spotLists: [],
   /** 行き先リスト */
-  spotLists: []
+  spotList: null
 })
 
 export const mutations = {
-  /** 行き先リストを設定します */  
+  /** 行き先リスト一覧を設定します */  
   setSpotLists (state, spotLists) {
     state.spotLists = spotLists
   },
   /** リストの先頭に要素を追加します */
   addSpotListOnTop (state, spotList) {
     state.spotLists.unshift(spotList)
+  },
+  /** 行き先リストを設定します */
+  setSpotList (state, spotList) {
+    state.spotList = spotList
+  },
+  /** 行き先リストに行き先を追加します */
+  addSpotToSpotList (state, spot) {
+    state.spotList.spots.push(spot)
   }
 }
 
@@ -29,7 +39,7 @@ export const actions = {
     // 画面表示用のリストに追加
     commit('addSpotListOnTop', spotListInput)
   },
-  /** ユーザが定義した行き先リストを取得します */
+  /** ユーザが定義した行き先リストを一覧取得します */
   async fetchUserDefinedSpotList({ commit }, userId) {
     // Firestoreからユーザに紐づく行き先リストのみ取得
     let snapshot = await firestore.collection('spot-lists')
@@ -51,9 +61,29 @@ export const actions = {
       })
     })
     commit('setSpotLists', spotLists)
+  },
+  /** 行き先リストIDから行き先リストを1件取得します */
+  async fetchSpotListById({ commit }, spotListId) {
+    let doc = await firestore.collection('spot-lists').doc(spotListId).get()
+    if (!doc.exists) commit('setSpotList', null)
+    let data = doc.data()
+    commit('setSpotList', {
+      id: doc.id,
+      name: data.name,
+      description: data.description,
+      ownerId: data.ownerId,
+      createdAt: data.createdAt.toDate(),
+      updatedAt: data.updatedAt.toDate()
+    })
+  },
+  /** 行き先リストに行き先を登録します */
+  async registerSpot ({ commit, state }, spot) {
+    commit('addSpotToSpotList', spot)
+    await firestore.collection('spot-lists').doc(state.spotList.id).set(state.spotList)
   }
 }
 
 export const getters = {
-  spotLists (state) { return state.spotLists }
+  spotLists (state) { return state.spotLists },
+  spotList (state) { return state.spotList }
 }

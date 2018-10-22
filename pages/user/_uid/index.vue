@@ -89,6 +89,7 @@ export default {
     async onRegisterSpotList (spotListInput) {
       // 登録処理
       spotListInput.ownerId = this.user.userId
+      spotListInput.spots = []
       await this.$store.dispatch('spot-list/registerSpotList', spotListInput)
 
       // モーダルを閉じる
